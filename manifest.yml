@@ -3,10 +3,7 @@ applications:
   disk_quota: 128M
   instance: 2
   memory: 512M
-<<<<<<< HEAD
-=======
   command: ./cpuburn
->>>>>>> 2643357a2184270915c2ae34eb09df1ed7793710
   buildpack: go_buildpack
   env:
     GOVERSION: go1.12.13

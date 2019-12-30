@@ -1,18 +1,20 @@
-cpuburn lets you use 100% of all available cores, useful when stress-testing.
+cf-cpuburn lets you use 100% of all available cores, useful when stress-testing.
+Download cpuburn from http://patrickmylund.com/projects/cpuburn/
+See http://patrickmylund.com/projects/cpuburn/ for more information.
+
+== About cf-cpuburn (feel the burn edition)
+
+This app converts cpuburn into a Cloud Foundry native app.
 
 == Installation
 
-Download cpuburn from http://patrickmylund.com/projects/cpuburn/
+## Run in the Cloud
 
-If you have Go installed, you can run: go get github.com/pmylund/cpuburn
-(a cpuburn binary will be added to your GOPATH/bin folder)
+git clone https://github.com/ceesco53/cf-cpuburn.git
+cd cf-cpuburn
+cf push
 
-Note: You do not need to have Go installed to run the stand-alone version.
+More instructions to follow
 
-== Usage
-
-  ./cpuburn (burn all available cores)
-  ./cpuburn -n 2 (burn two cores)
-  ./cpuburn -n 4 -u 5 (burn four cores, updating every five seconds)
-
-See http://patrickmylund.com/projects/cpuburn/ for more information.
+## things to work on:
+Add an endpoint to stop/start the burn

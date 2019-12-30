@@ -1,10 +1,10 @@
 applications:
-- name: cpuburn
+- name: cf-cpuburn
   disk_quota: 128M
-  instance: 2
+  instances: 1
   memory: 512M
-  command: ./cpuburn
   buildpack: go_buildpack
+  random-route: true
   env:
     GOVERSION: go1.12.13
-    GOPACKAGENAME: cpuburn
+    GOPACKAGENAME: cf-cpuburn

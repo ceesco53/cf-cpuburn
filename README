@@ -6,6 +6,9 @@ See http://patrickmylund.com/projects/cpuburn/ for more information.
 
 This app converts cpuburn into a Cloud Foundry native app.
 
+**NOTE before you push**
+Be sure to check https://github.com/cloudfoundry/go-buildpack/releases and check the GOVERSION in the manifest matches with a version packaged with go_buildpack.
+
 == Installation
 
 ## Run in the Cloud

@@ -15,7 +15,19 @@ import (
 var (
 	numBurn        int
 	updateInterval int
+	timeout        int
 )
+
+
+// Simple helper function to read an environment variable into integer or return a default value
+func getEnvAsInt(name string, defaultVal int) int {
+	valueStr := os.Getenv(name)
+	if value, err := strconv.Atoi(valueStr); err == nil {
+		return value
+	}
+
+	return defaultVal
+}
 
 func getCPUSample() (idle, total uint64) {
 	contents, err := ioutil.ReadFile("/proc/stat")
@@ -63,6 +75,12 @@ func cpuBurn() {
 	}
 }
 
+func healthCheck(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Something hit the health check endpoint")
+	w.Header().Set("cpuburn", "cpuburn health check")
+	w.WriteHeader(200)
+}
+
 func init() {
 	flag.IntVar(&numBurn, "n", 0, "number of cores to burn (0 = all)")
 	flag.IntVar(&updateInterval, "u", 10, "seconds between updates (0 = don't update)")
@@ -73,15 +91,31 @@ func init() {
 }
 
 func main() {
+	timeout := getEnvAsInt("CPUBURN_TIMEOUT", 600)
+	if timeout > 600 {
+		timeout = 600 // limit timeout of cpuburn in seconds
+	}
+
 	port := os.Getenv("PORT")
 	if len(port) < 1 {
 		port = "8080"
 	}
 	go func() {
 		http.HandleFunc("/", handler)
+		http.HandleFunc("/health", healthCheck)
 		fmt.Println("Listening on port", port)
 		http.ListenAndServe(":"+port, nil)
 	}()
+
+	ch := make(chan bool, 1)
+	defer close(ch)
+
+	go func() {
+		ch <- true
+	}()
+
+	timer := time.NewTimer(1 * time.Second)
+	defer timer.Stop()
 
 	runtime.GOMAXPROCS(numBurn)
 	fmt.Printf("Burning %d CPUs/cores\n", numBurn)
@@ -98,3 +132,4 @@ func main() {
 		select {} // wait forever
 	}
 }
+

@@ -5,6 +5,9 @@ applications:
   memory: 512M
   buildpack: go_buildpack
   random-route: true
+  health-check-type: http
+  health-check-http-endpoint: /health
   env:
     GOVERSION: go1.12.13
     GOPACKAGENAME: cf-cpuburn
+    CPUBURN_TIMEOUT: 600
